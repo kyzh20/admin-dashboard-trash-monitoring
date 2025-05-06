@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Dashboard - Trash Monitoring</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+<body class="bg-gray-100 font-sans leading-normal tracking-normal">
+  <div class="container mx-auto p-6">
+    <h1 class="text-3xl font-bold mb-6 text-center">Admin Dashboard - Trash Monitoring</h1>
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-6">
+      <div class="bg-white rounded-lg shadow p-6 flex flex-col items-center">
+        <i class="fas fa-trash fa-4x text-green-500 mb-4"></i>
+        <h2 class="text-xl font-semibold mb-2">Trash Count</h2>
+        <p id="trashCount" class="text-4xl font-bold text-gray-700">0</p>
+      </div>
+      <div class="bg-white rounded-lg shadow p-6 flex flex-col items-center">
+        <i class="fas fa-user-check fa-4x text-blue-500 mb-4"></i>
+        <h2 class="text-xl font-semibold mb-2">Persons Charged</h2>
+        <p id="personsCharged" class="text-4xl font-bold text-gray-700">0</p>
+      </div>
+      <div class="bg-white rounded-lg shadow p-6 flex flex-col items-center">
+        <i class="fas fa-exclamation-triangle fa-4x text-red-500 mb-4"></i>
+        <h2 class="text-xl font-semibold mb-2">Trash Full Status</h2>
+        <p id="trashFull" class="text-4xl font-bold text-gray-700">No</p>
+      </div>
+      <div class="bg-white rounded-lg shadow p-6 flex flex-col items-center">
+        <i class="fas fa-dumpster fa-4x text-purple-500 mb-4"></i>
+        <h2 class="text-xl font-semibold mb-2">Total Trash Count</h2>
+        <p id="totalTrashCount" class="text-4xl font-bold text-gray-700">0</p>
+      </div>
+      <div class="bg-white rounded-lg shadow p-6 flex flex-col items-center">
+        <i class="fas fa-users fa-4x text-indigo-500 mb-4"></i>
+        <h2 class="text-xl font-semibold mb-2">Total Persons Charged (Month)</h2>
+        <p id="totalPersonsChargedMonth" class="text-4xl font-bold text-gray-700">0</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const socket = io();
+
+    socket.on('updateData', data => {
+      document.getElementById('trashCount').textContent = data.trashCount ?? 0;
+      document.getElementById('personsCharged').textContent = data.personsCharged ?? 0;
+      document.getElementById('trashFull').textContent = data.trashFull ? 'Yes' : 'No';
+      document.getElementById('totalTrashCount').textContent = data.totalTrashCount ?? 0;
+      document.getElementById('totalPersonsChargedMonth').textContent = data.totalPersonsChargedMonth ?? 0;
+    });
+  </script>
+</body>
+</html>
